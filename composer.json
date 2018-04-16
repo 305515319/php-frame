@@ -1,0 +1,15 @@
+{
+	"name":"PHP-FRAME",
+	"author":"Guoming.Zhang",
+	"type":"FRAME",
+	"version":"v1.0.0",
+	"date":"2018-4-14 15:22:00",
+	"keywords":["php","frame","PHP框架","MVC"],
+	"description":"采用PSR-0编码规范开发的一套PHP框架，纯面向对象开发，composer依赖包管理、twig模版引擎、Medoo数据库类、Whoops错误输出等......",
+	"require":{
+		"twig/twig":"*",
+		"catfan/medoo":"*",
+		"filp/whoops":"*"
+	}
+
+}

@@ -1,0 +1,28 @@
+{% extends "Home/layout.html" %}
+{% block content %}
+<style type="text/css">
+table{border-collapse: collapse;text-align: center; width: 300px}
+table tr td{border:1px #ccc red;}
+</style>
+<form action="index/add" method="post">
+	用户名：<input type="text" name="user">
+	密码：<input type="pass" name="pass">
+	<input type="submit" value="增加用户">
+</form>
+<br/><hr><br/>
+
+
+
+<table border="1" cellpadding="0" cellspacing="0" >
+	<tr><td>用户ID</td><td>名称</td><td>操作</td></tr>
+	{% for item in data %}
+		<tr>
+			<td>{{ item.id }}</td>
+			<td>{{ item.user }}</td>
+			<td><a href="index/del/id/{{item.id}}">删除</a></td>
+		</tr>
+	{% endfor %}
+</table>
+
+
+{% endblock %}
