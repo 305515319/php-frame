@@ -1,0 +1,84 @@
+{% extends "Admin/layout.html" %}
+{% block content %}
+<style type="text/css">
+  small{color:#f00;display: none}
+</style>
+  <div class="admin-content-body">
+      <div class="am-cf am-padding am-padding-bottom-0">
+        <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">修改分类</strong> / <small style="display: inline-block;color:#000">Update Category </small></div>
+      </div>
+
+      <hr/>
+
+      <div class="am-g">
+
+        <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8"></div>
+
+        <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
+
+          <form class="am-form am-form-horizontal">
+
+            <div class="am-form-group">
+              <label for="user-name" class="am-u-sm-3 am-form-label">分类名称</label>
+              <div class="am-u-sm-9">
+                <input type="hidden" id="id" value="{{data.id}}">
+                <input type="text" id="name" value="{{data.name}}" placeholder="分类名称">
+                <small id="error"></small>
+              </div>
+            </div>
+
+             <div class="am-form-group">
+              <label for="user-name" class="am-u-sm-3 am-form-label">排序</label>
+              <div class="am-u-sm-9">
+                <input type="text" id="sort" value="{{data.sort}}" placeholder="排序">
+              </div>
+            </div>
+
+            <div class="am-form-group">
+              <div class="am-u-sm-9 am-u-sm-push-3">
+                <button type="button" name="save"  class="am-btn am-btn-primary">保存修改</button>
+                
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+<script type="text/javascript">
+  $(function(){
+    $("button[name='save']").click(function(){
+        var id = $("#id").val();
+        var n = $("#name").val();
+        var sort = $("#sort").val();
+
+        if(n =="") {
+          $("#error").html("请输入分类名称").show();
+          $("#name").focus();
+        } else {
+          $(this).attr("disabled","disabled");
+          $.post("/admin/savecate",{n:n,sort:sort,id:id,typ:"update"},function(res){
+            $("button[name='save']").removeAttr("disabled");
+            if(res == "0") {
+              alert("类型出错");
+            } else if(res == "1") {
+              window.location.href="/admin/category";
+            } else if(res == "2") {
+              alert("修改分类失败");
+            }  else if(res == "3") {
+              alert("类型名称已存在");
+            } else {
+              alert("未知错误");
+            }
+
+          });
+
+        }
+    });
+    $("input").blur(function(){
+      if($(this).val() != "") {
+        $(this).next('small').hide();
+      }
+    });
+  });
+</script>
+{% endblock %}

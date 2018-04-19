@@ -1,11 +1,11 @@
 <?php
 return array(
 	'database_type' => 'mysql',
-    'database_name' => 'redis',
+    'database_name' => 'php-frame',
     'server' => 'localhost',
     'username' => 'root',
     'password' => '4f54dd',
     'charset' => 'utf8',
     'port' => 3306,
-    'prefix' => 'redis_',
+    'prefix' => 'frame_',
 );

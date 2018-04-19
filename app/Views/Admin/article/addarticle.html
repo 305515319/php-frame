@@ -1,0 +1,78 @@
+{% extends "Admin/layout.html" %}
+{% block content %}
+<style type="text/css">
+  small{color:#f00;display: none}
+</style>
+  <div class="admin-content-body">
+      <div class="am-cf am-padding am-padding-bottom-0">
+        <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">创建文章</strong> / <small style="display: inline-block;color:#000">Add Article </small></div>
+      </div>
+
+      <hr/>
+
+      <div class="am-g">
+
+        <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8"></div>
+
+        <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
+
+          <form class="am-form am-form-horizontal" id="add" action="/admin/doAddArticle" method="post">
+            
+            <div class="am-form-group">
+              <label for="user-name" class="am-u-sm-3 am-form-label">类别</label>
+              <div class="am-u-sm-9">
+                <select name="pid" id="pid">
+                 {% for item in cate %}
+                  <option value="{{item.id}}">{{item.name}}</option>
+                 {% endfor %}
+                </select>
+              </div>
+            </div>
+
+
+            <div class="am-form-group">
+              <label for="user-name" class="am-u-sm-3 am-form-label">标题</label>
+              <div class="am-u-sm-9">
+                <input type="text" id="title" name="title" placeholder="标题">
+                <small id="title-error"></small>
+              </div>
+            </div>
+
+            <div class="am-form-group">
+              <label for="user-name" class="am-u-sm-3 am-form-label">内容</label>
+              <div class="am-u-sm-9" id="contents">
+                 <textarea name="content" id="content" style="height: 400px"></textarea>  
+                  <small id="content-error"></small>
+              </div>
+            </div>
+
+            <div class="am-form-group">
+              <div class="am-u-sm-9 am-u-sm-push-3">
+                <button type="button" id="save"  class="am-btn am-btn-primary">保存修改</button>
+                
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+<script type="text/javascript">
+ window.onload=function(){ UE.getEditor('content'); }
+  $(function(){
+    $("#save").click(function(){
+        var title = $("#title").val();
+        if(title =="") {
+          $("#title-error").html("请输入文章标题").show();
+          $("#title").focus();
+        } else {
+          $("#add").submit();
+        }
+    });
+    $("input").blur(function(){
+      if($(this).val() != "") {
+        $(this).next('small').hide();
+      }
+    });
+  });
+</script>
+{% endblock %}

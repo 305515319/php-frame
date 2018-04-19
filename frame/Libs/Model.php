@@ -6,7 +6,7 @@ class Model extends \Medoo\medoo
 {
 	public function __construct()
 	{
-		$database = Config::get(null,'Database',true);
+		$database = Config::get('Database',null,true);
 		parent::__construct($database);
 	}
 }

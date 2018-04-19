@@ -1,0 +1,102 @@
+{% extends "Admin/layout.html" %}
+{% block content %}
+<style type="text/css">
+  small{color:#f00;display: none}
+</style>
+  <div class="admin-content-body">
+      <div class="am-cf am-padding am-padding-bottom-0">
+        <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">修改管理员密码</strong> / <small  style="display: inline-block;color:#000">Update Manager Password</small></div>
+      </div>
+
+      <hr/>
+
+      <div class="am-g">
+
+        <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8"></div>
+
+        <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
+
+          <form class="am-form am-form-horizontal">
+
+            <div class="am-form-group">
+              <label for="user-name" class="am-u-sm-3 am-form-label">原始密码 / Old Password</label>
+              <div class="am-u-sm-9">
+                <input type="password" id="password" placeholder="原始密码 / Old Password">
+                <small id="old-password"></small>
+              </div>
+            </div>
+
+            <div class="am-form-group">
+              <label for="user-name" class="am-u-sm-3 am-form-label">新密码 / New Password</label>
+              <div class="am-u-sm-9">
+                <input type="password" id="newpassword" placeholder="新密码 / New Password">
+                <small id="new-password"></small>
+              </div>
+            </div>
+
+            <div class="am-form-group">
+              <label for="user-name" class="am-u-sm-3 am-form-label">确认密码 / Confirm Password</label>
+              <div class="am-u-sm-9">
+                <input type="password" id="repassword" placeholder="确认密码 / Confirm Password">
+                <small id="rep-password"></small>
+              </div>
+            </div>
+
+
+            <div class="am-form-group">
+              <div class="am-u-sm-9 am-u-sm-push-3">
+                <button type="button" name="save"  class="am-btn am-btn-primary">保存修改</button>
+                
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+<script type="text/javascript">
+  $(function(){
+    $("button[name='save']").click(function(){
+      var old = $("#password").val();
+      var newp = $("#newpassword").val();
+      var rep = $("#repassword").val();
+      if(old == "") {
+        $("#old-password").html("请输入原始密码").show();
+        $("#password").focus();
+      } else if(newp == "") {
+        $("#new-password").html("请输入新密码").show();
+        $("#newpassword").focus();
+      } else if(newp == old) {
+        $("#new-password").html("不能使用旧密码做为新密码").show();
+        $("#newpassword").focus();
+      } else if(rep == "") {
+        $("#rep-password").html("请确认新密码").show();
+        $("#repassword").focus();
+      } else if(rep != newp) {
+        $("#rep-password").html("两次密码输入不一致").show();
+        $("#repassword").focus();
+      } else {
+        $(this).attr("disabled","disabled");
+        $.post("/admin/setpass",{old:old,newp:newp,rep:rep},function(res){
+          $("button[name='save']").removeAttr("disabled");
+          if(res == "0") {
+            $("#rep-password").html("两次密码输入不一致").show();
+          } else if(res == "1") {
+            $("#rep-password").html("原始密码不正确").show();
+          } else if(res == "2") {
+            $("#rep-password").html("修改密码失败").show();
+          } else if(res == "3") {
+            window.location.href="/admin/logout";
+          } else {
+            $("#rep-password").html("未知错误~~").show();
+          }
+        });
+      }
+    });
+    $("input").blur(function(){
+      if($(this).val() != "") {
+        $(this).next('small').hide();
+      }
+    });
+  });
+</script>
+{% endblock %}

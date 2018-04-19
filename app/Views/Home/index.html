@@ -1,28 +1,58 @@
 {% extends "Home/layout.html" %}
 {% block content %}
-<style type="text/css">
-table{border-collapse: collapse;text-align: center; width: 300px}
-table tr td{border:1px #ccc red;}
-</style>
-<form action="index/add" method="post">
-	用户名：<input type="text" name="user">
-	密码：<input type="pass" name="pass">
-	<input type="submit" value="增加用户">
-</form>
-<br/><hr><br/>
+<div class="am-g am-g-fixed blog-g-fixed">
+  <div class="am-u-md-8">
+    {% for key, article in articles['articles'] %}
+      <article class="blog-main">
+        <h3 class="am-article-title blog-title">
+          <a href="#">{{article.title}}</a>
+        </h3>
+        <h4 class="am-article-meta blog-meta">发布日期：{{article.create_time}} &nbsp;&nbsp;<a href="">{{article.name}}</a></h4>
 
+        <div class="am-g blog-content">
+          {% autoescape false %}
+                {{articles['content'][key]}}
+            {% endautoescape %}
+            
+        </div>
+      </article>
 
+      <hr class="am-article-divider blog-hr">
 
-<table border="1" cellpadding="0" cellspacing="0" >
-	<tr><td>用户ID</td><td>名称</td><td>操作</td></tr>
-	{% for item in data %}
-		<tr>
-			<td>{{ item.id }}</td>
-			<td>{{ item.user }}</td>
-			<td><a href="index/del/id/{{item.id}}">删除</a></td>
-		</tr>
-	{% endfor %}
-</table>
+    {% endfor %}
 
+  {% if articles['pstring'] %}
+    <ul class="am-pagination blog-pagination">
+      <li class="am-pagination-prev"><a href="{{pstring.1}}">&laquo; 上一页</a></li>
+      <li class="am-pagination-next"><a href="{{pstring.2}}">下一页 &raquo;</a></li>
+    </ul>
+  {% endif %}
+  </div>
+
+  <div class="am-u-md-4 blog-sidebar">
+    <div class="am-panel-group">
+      <section class="am-panel am-panel-default">
+        <div class="am-panel-hd">关于我</div>
+        <div class="am-panel-bd">
+          <p>{{info | e}}</p>
+          <a class="am-btn am-btn-success am-btn-sm" href="#">查看更多 →</a>
+        </div>
+      </section>
+
+      {% if recommend['articles'] %}
+      <section class="am-panel am-panel-default">
+        <div class="am-panel-hd">文章目录</div>
+        <ul class="am-list blog-list">
+          {% for item in recommend['articles'] %}
+            <li><a href="/index/index?article_id={{item.id}}" target="_blank">{{item.title}}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+    </div>
+  </div>
+
+</div>
 
 {% endblock %}

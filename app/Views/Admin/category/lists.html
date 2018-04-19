@@ -1,0 +1,87 @@
+{% extends "Admin/layout.html" %}
+{% block content %}
+<div class="admin-content-body">
+      <div class="am-cf am-padding am-padding-bottom-0">
+        <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">分类列表</strong> / <small>Category Lists</small></div>
+      </div>
+
+      <hr>
+
+      <div class="am-g">
+        <div class="am-u-sm-12 am-u-md-6">
+          <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+              <button type="button" onclick="add()" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button>
+            </div>
+          </div>
+        </div>
+
+     
+      </div>
+
+      <div class="am-g">
+        <div class="am-u-sm-12">
+            <table class="am-table am-table-striped am-table-hover table-main">
+              <thead>
+              <tr>
+               <th class="table-id">ID</th><th class="table-title">名称</th><th class="table-title">排序</th><th class="table-date am-hide-sm-only">创建日期</th><th class="table-date am-hide-sm-only">修改日期</th><th class="table-set">操作</th>
+              </tr>
+              </thead>
+              <tbody>
+                {% for item in data %}
+                  <tr>
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.sort}}</td>
+                    <td class="am-hide-sm-only">{{item.create_time}}</td>
+                    <td class="am-hide-sm-only">{% if item.update_time != "" %}{{item.update_time}} {% else %} 原创无修改 {% endif %}</td>
+                    <td>
+                      <div class="am-btn-toolbar">
+                        <div class="am-btn-group am-btn-group-xs">
+                          <button class="am-btn am-btn-default am-btn-xs am-text-secondary" onclick="edit({{item.id}})"><span class="am-icon-pencil-square-o"></span> 编辑</button>
+                          <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onclick="del({{item.id}})"><span class="am-icon-trash-o"></span> 删除</button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              
+              
+              </tbody>
+            </table>
+
+             
+
+            {% autoescape false %}
+                {{page}}
+            {% endautoescape %}
+           
+        </div>
+
+      </div>
+    </div>
+
+<script type="text/javascript">
+  function add(){ window.location.href="/admin/addcate";}
+  function edit(id){ 
+    window.location.href="/admin/updatecate?id="+id; 
+  }
+  function del(id) {
+    if(confirm("确定要删除该类别吗？")){
+      $.post("/admin/delcate",{id:id,typ:"del"},function(res){
+         if(res == "0") {
+            alert("类型出错");
+          } else if(res == "1") {
+            window.location.href="/admin/category";
+          } else if(res == "2") {
+            alert("删除分类失败");
+          }  else if(res == "3") {
+            alert("该分类下有文章，请先处理文章");
+          } else {
+            alert("未知错误");
+          }
+      });
+    }
+  }
+</script>
+{% endblock %}
